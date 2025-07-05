@@ -1,0 +1,118 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "projects": "Projets",
+    "certificates": "Certifications",
+    "about": "À propos",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "Bonjour, je suis",
+    "name": "John Doe",
+    "subtitle": "Développeur Full Stack",
+    "description": "Je crée des expériences numériques belles, fonctionnelles et centrées sur l'utilisateur. Avec une passion pour le code propre et les solutions innovantes.",
+    "cta": "Voir Mon Travail",
+    "scroll": "Défiler Vers le Bas"
+  },
+  "about": {
+    "title": "À Propos de Moi",
+    "description": "Je suis un développeur full-stack passionné avec une expertise dans les technologies web modernes. J'aime créer des solutions innovantes qui résolvent des problèmes réels.",
+    "skills": "Compétences",
+    "experience": "Expérience",
+    "education": "Formation"
+  },
+  "projects": {
+    "title": "Mes Projets",
+    "subtitle": "Voici quelques-uns de mes travaux récents",
+    "viewAll": "Voir Tous les Projets",
+    "viewProject": "Voir le Projet",
+    "liveDemo": "Démo Live",
+    "sourceCode": "Code Source",
+    "technologies": "Technologies",
+    "featured": "Mis en Avant",
+    "all": "Tous les Projets"
+  },
+  "projectDetail": {
+    "backToProjects": "Retour aux Projets",
+    "liveDemo": "Démo Live",
+    "sourceCode": "Code Source",
+    "technologies": "Technologies Utilisées",
+    "description": "Description",
+    "reviews": "Avis",
+    "noReviews": "Aucun avis pour le moment",
+    "averageRating": "Note Moyenne",
+    "reviewsCount": "avis"
+  },
+  "review": {
+    "title": "Soumettre un Avis",
+    "name": "Nom (optionnel)",
+    "rating": "Note",
+    "comment": "Votre Avis",
+    "submit": "Soumettre l'Avis",
+    "success": "Avis soumis avec succès !",
+    "error": "Erreur lors de la soumission de l'avis. Veuillez réessayer.",
+    "selectProject": "Sélectionner un projet",
+    "placeholder": "Dites-nous ce que vous pensez de ce projet...",
+    "stars": {
+      "1": "Mauvais",
+      "2": "Moyen",
+      "3": "Bien",
+      "4": "Très Bien",
+      "5": "Excellent"
+    }
+  },
+  "certificates": {
+    "title": "Certifications",
+    "subtitle": "Certifications professionnelles et réalisations",
+    "viewCertificate": "Voir le Certificat",
+    "viewAll": "Voir Toutes les Certifications",
+    "issuedBy": "Délivré par",
+    "issueDate": "Date de Délivrance",
+    "expiryDate": "Date d'Expiration",
+    "credentialId": "ID de Crédential",
+    "valid": "Valide",
+    "expired": "Expiré"
+  },
+  "contact": {
+    "title": "Contactez-moi",
+    "subtitle": "Travaillons ensemble sur votre prochain projet",
+    "email": "Email",
+    "message": "Message",
+    "send": "Envoyer le Message",
+    "success": "Message envoyé avec succès !",
+    "error": "Erreur lors de l'envoi du message. Veuillez réessayer."
+  },
+  "footer": {
+    "copyright": "© 2024 John Doe. Tous droits réservés.",
+    "madeWith": "Fait avec ❤️ en utilisant React & Three.js"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Quelque chose s'est mal passé",
+    "retry": "Réessayer",
+    "close": "Fermer",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "sort": "Trier",
+    "order": "Ordre",
+    "view": "Voir",
+    "download": "Télécharger",
+    "share": "Partager"
+  },
+  "notFound": {
+    "message": "Oups ! La page que vous recherchez n'existe pas.",
+    "backHome": "Retour à l'Accueil"
+  },
+  "languages": {
+    "en": "English",
+    "fr": "Français"
+  },
+  "theme": {
+    "light": "Mode Clair",
+    "dark": "Mode Sombre"
+  }
+} 
