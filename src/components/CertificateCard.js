@@ -1,9 +1,20 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { fixImageUrl, getPlaceholderImage } from '../utils/imageUtils';
 
 const CertificateCard = ({ certificate }) => {
   const { t } = useTranslation();
+  const [imageError, setImageError] = useState(false);
+  const [imageUrl, setImageUrl] = useState('');
+
+  useEffect(() => {
+    // Log image URL for debugging
+    if (certificate.imageUrl) {
+      console.log(`Certificate image URL (${certificate.title}):`, certificate.imageUrl);
+      setImageUrl(fixImageUrl(certificate.imageUrl));
+    }
+  }, [certificate]);
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString();
@@ -11,6 +22,11 @@ const CertificateCard = ({ certificate }) => {
 
   const isExpired = (expiryDate) => {
     return new Date(expiryDate) < new Date();
+  };
+
+  const handleImageError = () => {
+    setImageError(true);
+    console.log(`Image error for certificate: ${certificate.title}`);
   };
 
   const cardVariants = {
@@ -134,12 +150,13 @@ const CertificateCard = ({ certificate }) => {
     >
       {/* Certificate Image */}
       <div className="relative h-48 bg-gray-200 dark:bg-gray-700 overflow-hidden">
-        {certificate.imageUrl ? (
+        {imageUrl ? (
           <motion.img
             variants={imageVariants}
-            src={certificate.imageUrl}
+            src={imageUrl}
             alt={certificate.title}
             className="w-full h-full object-cover"
+            onError={handleImageError}
           />
         ) : (
           <motion.div 
@@ -259,21 +276,20 @@ const CertificateCard = ({ certificate }) => {
               <span className="text-gray-500 dark:text-gray-400">
                 {t('certificates.credentialId')}:
               </span>
-              <span className="text-gray-900 dark:text-white font-mono text-xs">
+              <span className="text-gray-900 dark:text-white">
                 {certificate.credentialId}
               </span>
             </motion.div>
           )}
         </div>
-
-        {/* Action Buttons */}
-        <motion.div 
-          className="mt-6 flex space-x-3"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.4 }}
-        >
-          {certificate.credentialUrl && (
+        
+        {certificate.credentialUrl && (
+          <motion.div 
+            className="mt-4"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.4 }}
+          >
             <motion.a
               variants={buttonVariants}
               whileHover="hover"
@@ -281,12 +297,12 @@ const CertificateCard = ({ certificate }) => {
               href={certificate.credentialUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 bg-primary-600 hover:bg-primary-700 text-white text-center py-2 px-4 rounded-md transition-colors duration-200"
+              className="btn-primary text-sm px-4 py-2 inline-block"
             >
-              {t('certificates.viewCertificate')}
+              {t('certificates.verify')}
             </motion.a>
-          )}
-        </motion.div>
+          </motion.div>
+        )}
       </motion.div>
     </motion.div>
   );

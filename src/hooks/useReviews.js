@@ -38,6 +38,18 @@ export const useReviews = (projectId) => {
     }
   };
 
+  const deleteReview = async (reviewId) => {
+    try {
+      await reviewsApi.deleteReview(reviewId);
+      // Update local state to remove the deleted review
+      setReviews(prevReviews => prevReviews.filter(review => review._id !== reviewId));
+      return true;
+    } catch (err) {
+      console.error('Error deleting review:', err);
+      throw err;
+    }
+  };
+
   const refetch = () => {
     fetchReviews();
   };
@@ -48,6 +60,7 @@ export const useReviews = (projectId) => {
     error,
     pagination,
     submitReview,
+    deleteReview,
     refetch,
   };
 }; 

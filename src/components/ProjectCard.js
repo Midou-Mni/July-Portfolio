@@ -1,11 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { fixImageUrl, getPlaceholderImage } from '../utils/imageUtils';
 
 const ProjectCard = ({ project }) => {
   const { t } = useTranslation();
   const [isHovered, setIsHovered] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  const [imageUrl, setImageUrl] = useState('');
+
+  useEffect(() => {
+    // Log image URL for debugging
+    if (project.imageUrl) {
+      console.log(`Project image URL (${project.title}):`, project.imageUrl);
+      setImageUrl(fixImageUrl(project.imageUrl));
+    }
+  }, [project]);
 
   const cardVariants = {
     initial: { 
@@ -100,6 +111,11 @@ const ProjectCard = ({ project }) => {
     }
   };
 
+  const handleImageError = () => {
+    setImageError(true);
+    console.log(`Image error for project: ${project.title}`);
+  };
+
   return (
     <motion.div
       variants={cardVariants}
@@ -114,9 +130,10 @@ const ProjectCard = ({ project }) => {
       <div className="relative h-48 overflow-hidden">
         <motion.img
           variants={imageVariants}
-          src={project.imageUrl || 'https://via.placeholder.com/400x300?text=Project+Image'}
+          src={imageUrl || getPlaceholderImage('project')}
           alt={project.title}
           className="w-full h-full object-cover"
+          onError={handleImageError}
         />
         <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300" />
         

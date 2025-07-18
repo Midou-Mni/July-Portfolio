@@ -254,6 +254,109 @@ Response:
 }
 ```
 
+#### Add Project Images (Admin only)
+
+```
+POST /projects/:projectId/images
+```
+
+This endpoint allows uploading multiple additional images to a project. It accepts multipart/form-data with one or more image files.
+
+Request:
+- Content-Type: `multipart/form-data`
+- Form field: `additionalImages` (can be multiple files)
+
+Response:
+```json
+{
+  "success": true,
+  "data": {
+    "_id": "60d21b4667d0d8992e610c85",
+    "title": "Portfolio Website",
+    "description": "My personal portfolio website built with React and Node.js",
+    "imageUrl": "https://example.com/portfolio.jpg",
+    "additionalImages": [
+      "https://example.com/portfolio-2.jpg",
+      "https://example.com/portfolio-3.jpg"
+    ],
+    "allImages": [
+      "https://example.com/portfolio.jpg",
+      "https://example.com/portfolio-2.jpg",
+      "https://example.com/portfolio-3.jpg"
+    ],
+    "featured": true,
+    "updatedAt": "2023-07-15T12:00:00.000Z"
+  }
+}
+```
+
+#### Remove Project Image (Admin only)
+
+```
+DELETE /projects/:projectId/images/:imageIndex
+```
+
+This endpoint removes a specific image from a project's additional images. The `imageIndex` is the index of the image in the `allImages` array (0 is the main image, 1+ are additional images).
+
+Response:
+```json
+{
+  "success": true,
+  "data": {
+    "_id": "60d21b4667d0d8992e610c85",
+    "title": "Portfolio Website",
+    "imageUrl": "https://example.com/portfolio.jpg",
+    "additionalImages": [
+      "https://example.com/portfolio-3.jpg"
+    ],
+    "allImages": [
+      "https://example.com/portfolio.jpg",
+      "https://example.com/portfolio-3.jpg"
+    ],
+    "updatedAt": "2023-07-15T12:00:00.000Z"
+  }
+}
+```
+
+#### Reorder Project Images (Admin only)
+
+```
+PUT /projects/:projectId/images/reorder
+```
+
+This endpoint reorders the additional images of a project. The `imageOrder` array contains the indices of images in the desired order.
+
+Request body:
+```json
+{
+  "imageOrder": [2, 1, 3]
+}
+```
+
+Response:
+```json
+{
+  "success": true,
+  "data": {
+    "_id": "60d21b4667d0d8992e610c85",
+    "title": "Portfolio Website",
+    "imageUrl": "https://example.com/portfolio.jpg",
+    "additionalImages": [
+      "https://example.com/portfolio-2.jpg",
+      "https://example.com/portfolio-1.jpg",
+      "https://example.com/portfolio-3.jpg"
+    ],
+    "allImages": [
+      "https://example.com/portfolio.jpg",
+      "https://example.com/portfolio-2.jpg",
+      "https://example.com/portfolio-1.jpg",
+      "https://example.com/portfolio-3.jpg"
+    ],
+    "updatedAt": "2023-07-15T12:00:00.000Z"
+  }
+}
+```
+
 ## Reviews
 
 ### Review Endpoints

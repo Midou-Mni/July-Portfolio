@@ -10,7 +10,10 @@ A modern, responsive portfolio website built with React, featuring 3D animations
 - **Responsive Design**: Optimized for mobile, tablet, and desktop
 - **Smooth Animations**: Framer Motion animations throughout the interface
 - **Project Showcase**: Dynamic project cards with filtering and sorting
+- **Image Upload**: Drag and drop or URL input for project and certificate images
+- **Multiple Project Images**: Support for multiple images per project with gallery view
 - **Review System**: Allow visitors to submit reviews for projects
+- **Admin Controls**: Admins can delete reviews and manage multiple project images
 - **Modern UI**: Clean, professional design with Tailwind CSS
 
 ## 🛠️ Tech Stack
@@ -44,7 +47,7 @@ A modern, responsive portfolio website built with React, featuring 3D animations
    
    Edit `.env` and set your API base URL:
    ```env
-   REACT_APP_API_BASE_URL=http://localhost:5000/api
+   REACT_APP_API_BASE_URL=http://localhost:4000/api
    ```
 
 4. **Start the development server**
@@ -87,11 +90,50 @@ src/
 
 This frontend connects to a Node.js/Express/MongoDB backend. The API endpoints include:
 
-- **Projects**: `GET /api/projects`, `GET /api/projects/:id`
-- **Reviews**: `GET /api/reviews`, `POST /api/reviews`
-- **Certificates**: `GET /api/certificates`
+- **Projects**: `GET /api/projects`, `GET /api/projects/:id`, `POST /api/projects` (with image upload)
+- **Reviews**: `GET /api/reviews`, `POST /api/reviews`, `DELETE /api/reviews/:id` (admin only)
+- **Certificates**: `GET /api/certificates`, `POST /api/certificates` (with image upload)
 
 See the `API_REFERENCE.md` file for complete API documentation.
+
+## 📸 Image Upload Functionality
+
+The application supports two methods for adding images to projects and certificates:
+
+1. **Drag and Drop**: Directly drag image files into the designated drop area
+   - Modern, intuitive interface for uploading multiple files at once
+   - Visual feedback with thumbnails and upload progress
+   - Ability to remove selected images before uploading
+2. **URL Input**: Enter a URL for an external image
+
+Image upload features:
+- Supports common image formats (PNG, JPG, GIF)
+- Preview images before submission
+- File size limit of 10MB
+- Automatic image optimization on the server
+- Error handling for failed uploads
+- Real-time progress and success/error feedback
+
+## 🖼️ Multiple Project Images
+
+Projects can now have multiple images:
+
+- **Main Image**: The primary image shown on project cards and at the top of the project detail page
+- **Additional Images**: Up to 10 extra images that can be added to each project
+- **Image Gallery**: Interactive gallery with thumbnails on the project detail page
+- **Admin Controls**: Admins can add, remove, and manage project images
+- **Drag and Drop Upload**: Easy addition of multiple images at once with intuitive UI
+- **Thumbnail Management**: Remove individual images directly from the thumbnail view
+- **Image Reordering**: Drag and drop interface for reordering additional images
+- **Visual Feedback**: Real-time updates and status indicators during reordering
+
+## 👮‍♂️ Admin Features
+
+Admin users have special privileges:
+
+- **Review Management**: Delete inappropriate or spam reviews
+- **Project Management**: Create, edit, and delete projects with multiple images
+- **Certificate Management**: Create, edit, and delete certificates with images
 
 ## 🎨 Customization
 
