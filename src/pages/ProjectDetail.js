@@ -282,7 +282,7 @@ const ProjectDetail = () => {
                 <img
                   src={currentImageUrl || getPlaceholderImage('project')}
                   alt={project?.title}
-                  className="object-cover"
+                  className="object-cover max-h-[450px]"
                   onError={handleImageError}
                 />
                 {project?.featured && (
