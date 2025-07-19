@@ -8,7 +8,7 @@
   },
   "hero": {
     "title": "Hi, I'm",
-    "name": "John Doe",
+    "name": "Midou Menia",
     "subtitle": "Full Stack Developer",
     "description": "I create beautiful, functional, and user-centered digital experiences. With a passion for clean code and innovative solutions.",
     "cta": "View My Work",
@@ -84,7 +84,7 @@
     "error": "Error sending message. Please try again."
   },
   "footer": {
-    "copyright": "© 2024 John Doe. All rights reserved.",
+    "copyright": "© 2024 Midou Menia. All rights reserved.",
     "madeWith": "Made with ❤️ using React & Three.js"
   },
   "common": {
