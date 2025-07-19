@@ -27,7 +27,7 @@ function App() {
                   <Route path="/projects" element={<Projects />} />
                   <Route path="/projects/:id" element={<ProjectDetail />} />
                   <Route path="/certificates" element={<Certificates />} />
-                  <Route path="/login" element={<Login />} />
+                  // <Route path="/login" element={<Login />} />
                   <Route path="/admin" element={<AdminDashboard />} />
                   <Route path="*" element={
                     <div className="min-h-screen flex items-center justify-center">
