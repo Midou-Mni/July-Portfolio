@@ -169,7 +169,7 @@ const ProjectCard = ({ project }) => {
           {project.title}
         </h3>
         
-        <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
+        <p className="text-gray-600 dark:text-gray-400 mb-4 min-h-[48px] line-clamp-2">
           {project.description}
         </p>
 
