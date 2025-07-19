@@ -35,7 +35,7 @@ const Layout = ({ children }) => {
                 <span className="text-white font-bold text-lg">J</span>
               </motion.div>
               <span className="text-xl font-bold text-gray-900 dark:text-white">
-                John Doe
+                Midou Menia
               </span>
             </Link>
 
