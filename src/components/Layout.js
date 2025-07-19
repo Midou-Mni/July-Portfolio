@@ -32,7 +32,7 @@ const Layout = ({ children }) => {
                 whileHover={{ scale: 1.05 }}
                 className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center"
               >
-                <span className="text-white font-bold text-lg">J</span>
+                <span className="text-white font-bold text-lg">M</span>
               </motion.div>
               <span className="text-xl font-bold text-gray-900 dark:text-white">
                 Midou Menia
