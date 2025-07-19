@@ -71,7 +71,8 @@
     "expiryDate": "Date d'Expiration",
     "credentialId": "ID de Crédential",
     "valid": "Valide",
-    "expired": "Expiré"
+    "expired": "Expiré",
+    "verify": "Vérifier le certificat"
   },
   "contact": {
     "title": "Contactez-moi",
