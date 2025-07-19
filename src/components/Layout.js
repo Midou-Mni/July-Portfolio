@@ -30,13 +30,14 @@ const Layout = ({ children }) => {
             <Link to="/" className="flex items-center space-x-2">
               <motion.div
                 whileHover={{ scale: 1.05 }}
-                className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center"
+                className="w-10 h-10 flex items-center justify-center"
               >
-                <span className="text-white font-bold text-lg">J</span>
+                <img
+                  src="/logo.png"
+                  alt="MIDOU'S Logo"
+                  className="w-10 h-10 object-contain"
+                />
               </motion.div>
-              <span className="text-xl font-bold text-gray-900 dark:text-white">
-                John Doe
-              </span>
             </Link>
 
             {/* Navigation Links */}
