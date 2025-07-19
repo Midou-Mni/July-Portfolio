@@ -10,6 +10,7 @@ import StarRating from '../components/ui/StarRating';
 import DragDropImageUpload from '../components/ui/DragDropImageUpload';
 import { fixImageUrl, getPlaceholderImage } from '../utils/imageUtils';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import ProjectGallery from '../components/ProjectGallery';
 
 const ProjectDetail = () => {
   const { id } = useParams();
@@ -127,8 +128,11 @@ const ProjectDetail = () => {
 
   const handleRemoveImage = async (index) => {
     try {
-      await removeProjectImage(id, index );
-
+      // The index in the additionalImages array is offset by 1 since the main image is at index 0
+      // but not included in additionalImages array
+      await removeProjectImage(id, index);
+      
+      // Refresh project data
       const response = await getProjectById(id);
       setProject(response.data);
       
@@ -274,226 +278,20 @@ const ProjectDetail = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Project Image Gallery */}
             <div className="space-y-4">
-              {/* Main Image */}
-              <div className="relative rounded-xl shadow-lg">
-                <img
-                  src={currentImageUrl || getPlaceholderImage('project')}
-                  alt={project?.title}
-                  className="object-cover max-h-[450px]"
-                  onError={handleImageError}
-                />
-                {project?.featured && (
-                  <div className="absolute top-4 left-4">
-                    <span className="bg-primary-600 text-white text-sm font-medium px-3 py-1 rounded-full">
-                      {t('projects.featured')}
-                    </span>
-                  </div>
-                )}
-              </div>
-              
-              {/* Thumbnails */}
-              {allImages.length > 1 && (
-                <div className="space-y-2">
-                  {isAdmin && additionalImages.length > 1 && (
-                    <div className="flex justify-between items-center">
-                      <button
-                        onClick={() => setIsReordering(!isReordering)}
-                        className={`text-sm px-3 py-1 rounded ${
-                          isReordering 
-                            ? 'bg-primary-500 text-white' 
-                            : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
-                        }`}
-                      >
-                        {isReordering ? 'Done Reordering' : 'Reorder Images'}
-                      </button>
-                      
-                      {reorderStatus.loading && (
-                        <div className="flex items-center">
-                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-600 mr-2"></div>
-                          <span className="text-sm text-gray-600 dark:text-gray-400">Saving order...</span>
-                        </div>
-                      )}
-                      
-                      {reorderStatus.error && (
-                        <div className="text-sm text-red-500">{reorderStatus.error}</div>
-                      )}
-                      
-                      {reorderStatus.success && (
-                        <div className="text-sm text-green-500">Order saved successfully!</div>
-                      )}
-                    </div>
-                  )}
-                  
-                  {isAdmin && isReordering ? (
-                    <DragDropContext onDragEnd={handleDragEnd}>
-                      <Droppable droppableId="thumbnails" direction="horizontal">
-                        {(provided) => (
-                          <div 
-                            {...provided.droppableProps}
-                            ref={provided.innerRef}
-                            className="flex space-x-2 overflow-x-auto pb-2"
-                          >
-                            {/* Main image is not draggable */}
-                            <div 
-                              className={`relative cursor-pointer rounded-md overflow-hidden border-2 transition-all ${
-                                selectedImageIndex === 0 
-                                  ? 'border-primary-500 opacity-100 scale-105' 
-                                  : 'border-transparent opacity-70 hover:opacity-100'
-                              }`}
-                              onClick={() => handleThumbnailClick(0)}
-                            >
-                              <img 
-                                src={mainImageUrl} 
-                                alt="Main project image"
-                                className="h-16 w-16 object-cover"
-                              />
-                              <div className="absolute bottom-1 left-1 bg-black bg-opacity-50 text-white text-xs px-1 rounded">
-                                Main
-                              </div>
-                            </div>
-                            
-                            {/* Additional images are draggable */}
-                            {additionalImages.map((img, index) => (
-                              <Draggable 
-                                key={`image-${index}`} 
-                                draggableId={`image-${index}`} 
-                                index={index + 1} // +1 because main image is at index 0
-                              >
-                                {(provided) => (
-                                  <div
-                                    ref={provided.innerRef}
-                                    {...provided.draggableProps}
-                                    {...provided.dragHandleProps}
-                                    className={`relative cursor-pointer rounded-md overflow-hidden border-2 transition-all ${
-                                      selectedImageIndex === index + 1
-                                        ? 'border-primary-500 opacity-100 scale-105' 
-                                        : 'border-transparent opacity-70 hover:opacity-100'
-                                    }`}
-                                    onClick={() => handleThumbnailClick(index + 1)}
-                                  >
-                                    <img 
-                                      src={img} 
-                                      alt={`Project image ${index + 2}`}
-                                      className="h-16 w-16 object-cover"
-                                    />
-                                    
-                                    <button
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        handleRemoveImage(index);
-                                      }}
-                                      className="absolute top-0 right-0 bg-red-500 text-white rounded-bl-md p-1 opacity-0 group-hover:opacity-100 hover:opacity-100 transition-opacity"
-                                      title="Remove image"
-                                    >
-                                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                                      </svg>
-                                    </button>
-                                    
-                                    <div className="absolute bottom-1 left-1 bg-black bg-opacity-50 text-white text-xs px-1 rounded">
-                                      {index + 2}
-                                    </div>
-                                  </div>
-                                )}
-                              </Draggable>
-                            ))}
-                            {provided.placeholder}
-                          </div>
-                        )}
-                      </Droppable>
-                    </DragDropContext>
-                  ) : (
-                    <div className="flex space-x-2 overflow-x-auto pb-2">
-                      {allImages.map((img, index) => (
-                        <div 
-                          key={index}
-                          onClick={() => handleThumbnailClick(index)}
-                          className={`relative cursor-pointer rounded-md overflow-hidden border-2 transition-all ${
-                            selectedImageIndex === index 
-                              ? 'border-primary-500 opacity-100 scale-105' 
-                              : 'border-transparent opacity-70 hover:opacity-100'
-                          }`}
-                        >
-                          <img 
-                            src={img} 
-                            alt={`Project image ${index + 1}`}
-                            className="h-16 w-16 object-cover"
-                          />
-                          
-                          {/* Admin delete button for additional images */}
-                          {isAdmin && index > 0 && (
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleRemoveImage(index - 1);
-                              }}
-                              className="absolute top-0 right-0 bg-red-500 text-white rounded-bl-md p-1 opacity-0 group-hover:opacity-100 hover:opacity-100 transition-opacity"
-                              title="Remove image"
-                            >
-                              <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
-                                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                              </svg>
-                            </button>
-                          )}
-                          
-                          {/* Show index numbers */}
-                          {isAdmin && (
-                            <div className="absolute bottom-1 left-1 bg-black bg-opacity-50 text-white text-xs px-1 rounded">
-                              {index === 0 ? 'Main' : index + 1}
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
-              
-              {/* Admin Image Upload Section */}
-              {isAdmin && (
-                <div className="mt-4">
-                  {!showImageUploader ? (
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => setShowImageUploader(true)}
-                      className="btn-secondary w-full flex items-center justify-center"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
-                      </svg>
-                      Add Images
-                    </motion.button>
-                  ) : (
-                    <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-white dark:bg-gray-800">
-                      <div className="flex justify-between items-center mb-4">
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Add Project Images</h3>
-                        <button
-                          onClick={() => setShowImageUploader(false)}
-                          className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                          </svg>
-                        </button>
-                      </div>
-                      
-                      <DragDropImageUpload 
-                        onUpload={handleImageUpload} 
-                        maxFiles={5}
-                      />
-                      
-                      {uploadStatus.error && (
-                        <div className="mt-4 text-red-500 text-sm">{uploadStatus.error}</div>
-                      )}
-                      
-                      {uploadStatus.success && (
-                        <div className="mt-4 text-green-500 text-sm">Images uploaded successfully!</div>
-                      )}
-                    </div>
-                  )}
-                </div>
-              )}
+              <ProjectGallery
+                images={allImages}
+                isAdmin={isAdmin}
+                onReorder={(newImages) => {
+                  // Reorder handler: update additionalImages and call backend if needed
+                  setAdditionalImages(newImages.slice(1));
+                  // Optionally, call reorderProjectImages API here if you want instant sync
+                }}
+                onRemove={(index) => {
+                  // Remove handler: remove image at index (excluding main image)
+                  if (index === 0) return; // Prevent removing main image
+                  handleRemoveImage(index - 1);
+                }}
+              />
             </div>
 
             {/* Project Info */}
@@ -565,6 +363,9 @@ const ProjectDetail = () => {
             </div>
           </div>
         </motion.div>
+
+                
+
 
         {/* Reviews Section */}
         <motion.div
