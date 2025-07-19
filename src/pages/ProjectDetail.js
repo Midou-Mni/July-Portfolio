@@ -127,11 +127,8 @@ const ProjectDetail = () => {
 
   const handleRemoveImage = async (index) => {
     try {
-      // The index in the additionalImages array is offset by 1 since the main image is at index 0
-      // but not included in additionalImages array
-      await removeProjectImage(id, index + 1);
-      
-      // Refresh project data
+      await removeProjectImage(id, index );
+
       const response = await getProjectById(id);
       setProject(response.data);
       
