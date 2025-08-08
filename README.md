@@ -4,7 +4,7 @@ A modern, responsive portfolio website built with React, featuring 3D animations
 
 ## 🚀 Features
 
-- **3D Hero Section**: Interactive Three.js animations with floating particles and geometric shapes
+- **3D Hero Section**: Interactive Three.js animations with floating particles and geometric shapes 
 - **Dark/Light Mode**: Persistent theme switching with smooth transitions
 - **Internationalization**: Support for English and French languages
 - **Responsive Design**: Optimized for mobile, tablet, and desktop
@@ -219,5 +219,6 @@ This project is licensed under the MIT License.
 For support or questions, please open an issue in the repository.
 
 ---
+
 
 Built with ❤️ using React, Three.js, and modern web technologies. 
