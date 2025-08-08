@@ -9,7 +9,7 @@ This guide provides step-by-step instructions for testing the Portfolio API usin
 
 2. Import the environment file:
    - `Portfolio_API.postman_environment.json`
-
+ 
 3. Set up your environment variables:
    - `base_url`: Your API base URL (default: `http://localhost:5000/api`)
    - `token`: Will be automatically set after login
