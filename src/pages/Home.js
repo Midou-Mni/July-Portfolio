@@ -54,12 +54,10 @@ const Home = () => {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        {/* 3D Background */}
         <div className="absolute inset-0 z-0">
           {useFallback ? <HeroSceneFallback /> : <HeroScene />}
         </div>
-        
-        {/* Content Overlay */}
+
         <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8">
           <motion.div
             variants={containerVariants}
@@ -76,21 +74,21 @@ const Home = () => {
                 {t('hero.name')}
               </span>
             </motion.h1>
-            
+
             <motion.h2
               variants={itemVariants}
               className="text-xl sm:text-2xl lg:text-3xl text-gray-600 dark:text-gray-300 mb-6"
             >
               {t('hero.subtitle')}
             </motion.h2>
-            
+
             <motion.p
               variants={itemVariants}
               className="text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto"
             >
               {t('hero.description')}
             </motion.p>
-            
+
             <motion.div
               variants={itemVariants}
               className="flex flex-col sm:flex-row gap-4 justify-center"
@@ -107,7 +105,7 @@ const Home = () => {
             </motion.div>
           </motion.div>
         </div>
-        
+
         {/* Scroll Indicator */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -138,11 +136,10 @@ const Home = () => {
 
       {/* Featured Projects Section */}
       <section className="py-20 bg-gray-50 dark:bg-gray-800 relative overflow-hidden">
-        {/* 3D Background */}
         <div className="absolute inset-0 z-0">
           {useFallback ? <ProjectsBackgroundFallback /> : <ProjectsBackground />}
         </div>
-        
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -159,11 +156,7 @@ const Home = () => {
             </p>
           </motion.div>
 
-          {projectsLoading ? (
-            <div className="flex justify-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
-            </div>
-          ) : (
+          {!projectsLoading && projects?.length ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {projects.map((project, index) => (
                 <motion.div
@@ -177,7 +170,11 @@ const Home = () => {
                 </motion.div>
               ))}
             </div>
-          )}
+          ) : projectsLoading ? (
+            <div className="flex justify-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+            </div>
+          ) : null}
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -201,11 +198,10 @@ const Home = () => {
 
       {/* Featured Certificates Section */}
       <section className="py-20 bg-white dark:bg-gray-900 relative overflow-hidden">
-        {/* 3D Background */}
         <div className="absolute inset-0 z-0">
           {useFallback ? <CertificatesBackgroundFallback /> : <CertificatesBackground />}
         </div>
-        
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -222,11 +218,7 @@ const Home = () => {
             </p>
           </motion.div>
 
-          {certificatesLoading ? (
-            <div className="flex justify-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
-            </div>
-          ) : (
+          {!certificatesLoading && certificates?.length ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {certificates.map((certificate, index) => (
                 <motion.div
@@ -240,7 +232,11 @@ const Home = () => {
                 </motion.div>
               ))}
             </div>
-          )}
+          ) : certificatesLoading ? (
+            <div className="flex justify-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+            </div>
+          ) : null}
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -265,4 +261,4 @@ const Home = () => {
   );
 };
 
-export default Home; 
+export default Home;
