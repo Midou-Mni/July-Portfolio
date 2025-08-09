@@ -37,23 +37,24 @@ const ProjectDetail = () => {
       try {
         setLoading(true);
         setError(null);
-        const response = await getProjectById(id);
-        setProject(response.data);
+        const data = await getProjectById(id);
+        const projectData = data?.data || data; // support both wrapped and unwrapped
+        setProject(projectData);
         
         // Process main image URL
-        if (response.data && response.data.imageUrl) {
-          console.log(`Project detail image URL (${response.data.title}):`, response.data.imageUrl);
-          const mainImg = fixImageUrl(response.data.imageUrl);
+        if (projectData && projectData.imageUrl) {
+          console.log(`Project detail image URL (${projectData.title}):`, projectData.imageUrl);
+          const mainImg = fixImageUrl(projectData.imageUrl);
           setMainImageUrl(mainImg);
         }
         
         // Process additional images
-        if (response.data && response.data.additionalImages && response.data.additionalImages.length > 0) {
-          const fixedAdditionalImages = response.data.additionalImages.map(img => fixImageUrl(img));
+        if (projectData && projectData.additionalImages && projectData.additionalImages.length > 0) {
+          const fixedAdditionalImages = projectData.additionalImages.map(img => fixImageUrl(img));
           setAdditionalImages(fixedAdditionalImages);
           console.log('Additional images:', fixedAdditionalImages);
-        } else if (response.data && response.data.allImages && response.data.allImages.length > 0) {
-          const fixedAllImages = response.data.allImages.map(img => fixImageUrl(img));
+        } else if (projectData && projectData.allImages && projectData.allImages.length > 0) {
+          const fixedAllImages = projectData.allImages.map(img => fixImageUrl(img));
           setAdditionalImages(fixedAllImages.slice(1)); // Skip the main image
           console.log('All images:', fixedAllImages);
         }
@@ -101,15 +102,16 @@ const ProjectDetail = () => {
       await addProjectImages(id, files);
       
       // Refresh project data to get updated images
-      const response = await getProjectById(id);
-      setProject(response.data);
+      const data = await getProjectById(id);
+      const projectData = data?.data || data;
+      setProject(projectData);
       
       // Update additional images
-      if (response.data && response.data.additionalImages && response.data.additionalImages.length > 0) {
-        const fixedAdditionalImages = response.data.additionalImages.map(img => fixImageUrl(img));
+      if (projectData && projectData.additionalImages && projectData.additionalImages.length > 0) {
+        const fixedAdditionalImages = projectData.additionalImages.map(img => fixImageUrl(img));
         setAdditionalImages(fixedAdditionalImages);
-      } else if (response.data && response.data.allImages && response.data.allImages.length > 0) {
-        const fixedAllImages = response.data.allImages.map(img => fixImageUrl(img));
+      } else if (projectData && projectData.allImages && projectData.allImages.length > 0) {
+        const fixedAllImages = projectData.allImages.map(img => fixImageUrl(img));
         setAdditionalImages(fixedAllImages.slice(1)); // Skip the main image
       }
       
@@ -133,15 +135,16 @@ const ProjectDetail = () => {
       await removeProjectImage(id, index);
       
       // Refresh project data
-      const response = await getProjectById(id);
-      setProject(response.data);
+      const data = await getProjectById(id);
+      const projectData = data?.data || data;
+      setProject(projectData);
       
       // Update additional images
-      if (response.data && response.data.additionalImages && response.data.additionalImages.length > 0) {
-        const fixedAdditionalImages = response.data.additionalImages.map(img => fixImageUrl(img));
+      if (projectData && projectData.additionalImages && projectData.additionalImages.length > 0) {
+        const fixedAdditionalImages = projectData.additionalImages.map(img => fixImageUrl(img));
         setAdditionalImages(fixedAdditionalImages);
-      } else if (response.data && response.data.allImages && response.data.allImages.length > 0) {
-        const fixedAllImages = response.data.allImages.map(img => fixImageUrl(img));
+      } else if (projectData && projectData.allImages && projectData.allImages.length > 0) {
+        const fixedAllImages = projectData.allImages.map(img => fixImageUrl(img));
         setAdditionalImages(fixedAllImages.slice(1)); // Skip the main image
       }
       
@@ -199,12 +202,13 @@ const ProjectDetail = () => {
       
       // Refresh project data to reset to the original order
       try {
-        const response = await getProjectById(id);
-        if (response.data && response.data.additionalImages && response.data.additionalImages.length > 0) {
-          const fixedAdditionalImages = response.data.additionalImages.map(img => fixImageUrl(img));
+        const data = await getProjectById(id);
+        const projectData = data?.data || data;
+        if (projectData && projectData.additionalImages && projectData.additionalImages.length > 0) {
+          const fixedAdditionalImages = projectData.additionalImages.map(img => fixImageUrl(img));
           setAdditionalImages(fixedAdditionalImages);
-        } else if (response.data && response.data.allImages && response.data.allImages.length > 0) {
-          const fixedAllImages = response.data.allImages.map(img => fixImageUrl(img));
+        } else if (projectData && projectData.allImages && projectData.allImages.length > 0) {
+          const fixedAllImages = projectData.allImages.map(img => fixImageUrl(img));
           setAdditionalImages(fixedAllImages.slice(1)); // Skip the main image
         }
       } catch (refreshErr) {
@@ -213,10 +217,7 @@ const ProjectDetail = () => {
     }
   };
 
-  // Get the current displayed image URL
-  const currentImageUrl = selectedImageIndex === 0 
-    ? mainImageUrl 
-    : additionalImages[selectedImageIndex - 1];
+  // Gallery component manages current image selection
 
   if (loading) {
     return (
@@ -364,8 +365,40 @@ const ProjectDetail = () => {
           </div>
         </motion.div>
 
-                
-
+        {isAdmin && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="mt-8"
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Manage Images</h3>
+              <button
+                onClick={() => setShowImageUploader(prev => !prev)}
+                className="btn-secondary"
+              >
+                {showImageUploader ? 'Close Uploader' : 'Add Images'}
+              </button>
+            </div>
+            {showImageUploader && (
+              <div className="card p-4">
+                <DragDropImageUpload onUpload={handleImageUpload} maxFiles={10} />
+                <div className="mt-3">
+                  {uploadStatus.loading && (
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Uploading...</p>
+                  )}
+                  {uploadStatus.error && (
+                    <p className="text-sm text-red-500">{uploadStatus.error}</p>
+                  )}
+                  {uploadStatus.success && (
+                    <p className="text-sm text-green-600">Images uploaded successfully</p>
+                  )}
+                </div>
+              </div>
+            )}
+          </motion.div>
+        )}
 
         {/* Reviews Section */}
         <motion.div
